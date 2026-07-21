@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>ALERTA</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      background: #000;
+      color: #ff0000;
+      font-family: "Courier New", monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    #pantalla {
+      width: 100%;
+      padding: 25px;
+    }
+
+    .alerta {
+      font-size: 42px;
+      letter-spacing: 5px;
+      margin: 0 0 25px;
+      text-shadow: 3px 0 #770000, -3px 0 #ff0000;
+      animation: parpadeo 0.35s infinite, temblor 0.12s infinite;
+    }
+
+    #mensaje {
+      min-height: 70px;
+      color: #fff;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    #contador {
+      margin-top: 20px;
+      font-size: 75px;
+      font-weight: bold;
+      color: #ff0000;
+      text-shadow: 0 0 25px #ff0000;
+    }
+
+    .barra {
+      width: 100%;
+      max-width: 450px;
+      height: 18px;
+      margin: 25px auto;
+      border: 2px solid #ff0000;
+      background: #100000;
+      overflow: hidden;
+    }
+
+    #progreso {
+      width: 0%;
+      height: 100%;
+      background: #ff0000;
+      box-shadow: 0 0 15px #ff0000;
+      transition: width 0.3s;
+    }
+
+    #codigo {
+      color: #7a0000;
+      font-size: 13px;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+
+    #final {
+      display: none;
+      width: 100%;
+      padding: 30px;
+      color: white;
+    }
+
+    #final h1 {
+      color: #ff0000;
+      font-size: 40px;
+    }
+
+    .interferencia {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.04) 0px,
+        rgba(255, 255, 255, 0.04) 1px,
+        transparent 2px,
+        transparent 5px
+      );
+      animation: interferencia 0.15s infinite;
+    }
+
+    .destello {
+      animation: destelloRojo 0.18s;
+    }
+
+    @keyframes parpadeo {
+      0%, 45% { opacity: 1; }
+      46%, 60% { opacity: 0.2; }
+      61%, 100% { opacity: 1; }
+    }
+
+    @keyframes temblor {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(2px, -2px); }
+      50% { transform: translate(-2px, 1px); }
+      75% { transform: translate(1px, 2px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    @keyframes interferencia {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(3px); }
+      100% { transform: translateY(-3px); }
+    }
+
+    @keyframes destelloRojo {
+      0%, 100% { background: #000; }
+      50% { background: #5b0000; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="interferencia"></div>
+
+  <main id="pantalla">
+    <h1 class="alerta">⚠ ALERTA ⚠</h1>
+
+    <div id="mensaje">
+      Detectando una señal desconocida...
+    </div>
+
+    <div id="contador">10</div>
+
+    <div class="barra">
+      <div id="progreso"></div>
+    </div>
+
+    <div id="codigo">
+      INICIANDO PROTOCOLO DE EMERGENCIA...
+    </div>
+  </main>
+
+  <section id="final">
+    <h1>FIN DEL JUEGO</h1>
+    <p>Era solamente una simulación.</p>
+    <p>Tu dispositivo está seguro.</p>
+  </section>
+
+  <script>
+    const mensajes = [
+      "Detectando una señal desconocida...",
+      "La conexión no puede ser interrumpida...",
+      "Interferencia crítica detectada...",
+      "ALERTA: actividad desconocida...",
+      "Analizando el dispositivo...",
+      "La señal está cada vez más cerca...",
+      "No apagues la pantalla...",
+      "Protocolo de emergencia activado...",
+      "Preparando cierre del sistema...",
+      "SEÑAL LOCALIZADA..."
+    ];
+
+    const mensaje = document.getElementById("mensaje");
+    const contador = document.getElementById("contador");
+    const progreso = document.getElementById("progreso");
+    const codigo = document.getElementById("codigo");
+    const pantalla = document.getElementById("pantalla");
+    const final = document.getElementById("final");
+
+    let tiempo = 10;
+
+    function generarCodigo() {
+      const caracteres = "01X#@!ERROR-ALERTA-UNKNOWN";
+      let resultado = "";
+
+      for (let i = 0; i < 70; i++) {
+        const posicion = Math.floor(Math.random() * caracteres.length);
+        resultado += caracteres[posicion];
+      }
+
+      codigo.textContent = resultado;
+    }
+
+    const intervalo = setInterval(() => {
+      tiempo--;
+
+      contador.textContent = tiempo;
+      mensaje.textContent = mensajes[10 - tiempo];
+      progreso.style.width = ((10 - tiempo) * 10) + "%";
+
+      generarCodigo();
+      document.body.classList.add("destello");
+
+      setTimeout(() => {
+        document.body.classList.remove("destello");
+      }, 180);
+
+      if (tiempo <= 0) {
+        clearInterval(intervalo);
+        contador.textContent = "0";
+        mensaje.textContent = "CONEXIÓN TERMINADA";
+        progreso.style.width = "100%";
+
+        setTimeout(() => {
+          pantalla.style.display = "none";
+          final.style.display = "block";
+        }, 2000);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
