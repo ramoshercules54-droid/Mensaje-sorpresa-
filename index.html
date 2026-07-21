@@ -1,226 +1,366 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>ALERTA</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librería de Dragones | Álvaro Veliz Mendoza</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
     body {
-      margin: 0;
-      width: 100%;
-      min-height: 100vh;
-      overflow: hidden;
-      background: #000;
-      color: #ff0000;
-      font-family: "Courier New", monospace;
+      background: linear-gradient(to bottom, #0d0d1f, #1a1a40, #2a1458);
+      color: white;
+      line-height: 1.6;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ffb703;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
       display: flex;
       align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffb703, #d97706);
+      display: flex;
       justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      box-shadow: 0 0 15px rgba(255, 183, 3, 0.8);
+    }
+
+    .logo-text h1 {
+      font-size: 22px;
+      color: #ffb703;
+    }
+
+    .logo-text p {
+      font-size: 13px;
+      color: #ddd;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffb703;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 90px 20px 70px;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+                  url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80') center/cover;
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      color: #ffb703;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 8px #000;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 18px;
+      color: #f5f5f5;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 24px;
+      background: #ffb703;
+      color: #1a1a1a;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ffd166;
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 60px 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    section h2 {
+      text-align: center;
+      font-size: 34px;
+      margin-bottom: 25px;
+      color: #ffb703;
+    }
+
+    .sobre p {
+      text-align: center;
+      max-width: 850px;
+      margin: auto;
+      font-size: 18px;
+    }
+
+    .viñetas {
+      margin-top: 30px;
+      background: rgba(255,255,255,0.06);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .viñetas ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .viñetas li {
+      margin: 14px 0;
+      font-size: 17px;
+      padding-left: 32px;
+      position: relative;
+    }
+
+    .viñetas li::before {
+      content: "🐉";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.07);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card .img {
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 70px;
+      background: linear-gradient(to bottom right, #4b0082, #0f3460);
+    }
+
+    .card .contenido {
+      padding: 20px;
+    }
+
+    .card h3 {
+      color: #ffb703;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #eee;
+    }
+
+    .autor-box {
+      background: rgba(255, 183, 3, 0.12);
+      border-left: 5px solid #ffb703;
+      padding: 25px;
+      margin-top: 35px;
+      border-radius: 10px;
+    }
+
+    .contacto {
       text-align: center;
     }
 
-    #pantalla {
-      width: 100%;
-      padding: 25px;
+    .contacto p {
+      margin: 8px 0;
+      font-size: 18px;
     }
 
-    .alerta {
-      font-size: 42px;
-      letter-spacing: 5px;
-      margin: 0 0 25px;
-      text-shadow: 3px 0 #770000, -3px 0 #ff0000;
-      animation: parpadeo 0.35s infinite, temblor 0.12s infinite;
+    footer {
+      background: #0b0b16;
+      text-align: center;
+      padding: 20px;
+      border-top: 2px solid #ffb703;
+      margin-top: 30px;
+      color: #ccc;
     }
 
-    #mensaje {
-      min-height: 70px;
-      color: #fff;
-      font-size: 20px;
-      line-height: 1.5;
-    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
 
-    #contador {
-      margin-top: 20px;
-      font-size: 75px;
-      font-weight: bold;
-      color: #ff0000;
-      text-shadow: 0 0 25px #ff0000;
-    }
+      nav a {
+        margin: 0 8px;
+      }
 
-    .barra {
-      width: 100%;
-      max-width: 450px;
-      height: 18px;
-      margin: 25px auto;
-      border: 2px solid #ff0000;
-      background: #100000;
-      overflow: hidden;
-    }
+      .hero h2 {
+        font-size: 30px;
+      }
 
-    #progreso {
-      width: 0%;
-      height: 100%;
-      background: #ff0000;
-      box-shadow: 0 0 15px #ff0000;
-      transition: width 0.3s;
-    }
-
-    #codigo {
-      color: #7a0000;
-      font-size: 13px;
-      line-height: 1.4;
-      word-break: break-all;
-    }
-
-    #final {
-      display: none;
-      width: 100%;
-      padding: 30px;
-      color: white;
-    }
-
-    #final h1 {
-      color: #ff0000;
-      font-size: 40px;
-    }
-
-    .interferencia {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.04) 0px,
-        rgba(255, 255, 255, 0.04) 1px,
-        transparent 2px,
-        transparent 5px
-      );
-      animation: interferencia 0.15s infinite;
-    }
-
-    .destello {
-      animation: destelloRojo 0.18s;
-    }
-
-    @keyframes parpadeo {
-      0%, 45% { opacity: 1; }
-      46%, 60% { opacity: 0.2; }
-      61%, 100% { opacity: 1; }
-    }
-
-    @keyframes temblor {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(2px, -2px); }
-      50% { transform: translate(-2px, 1px); }
-      75% { transform: translate(1px, 2px); }
-      100% { transform: translate(0, 0); }
-    }
-
-    @keyframes interferencia {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(3px); }
-      100% { transform: translateY(-3px); }
-    }
-
-    @keyframes destelloRojo {
-      0%, 100% { background: #000; }
-      50% { background: #5b0000; }
+      .logo-text h1 {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
-
 <body>
-  <div class="interferencia"></div>
 
-  <main id="pantalla">
-    <h1 class="alerta">⚠ ALERTA ⚠</h1>
-
-    <div id="mensaje">
-      Detectando una señal desconocida...
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🐉</div>
+      <div class="logo-text">
+        <h1>Dragones de Álvaro</h1>
+        <p>Álvaro Veliz Mendoza</p>
+      </div>
     </div>
 
-    <div id="contador">10</div>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
 
-    <div class="barra">
-      <div id="progreso"></div>
-    </div>
-
-    <div id="codigo">
-      INICIANDO PROTOCOLO DE EMERGENCIA...
-    </div>
-  </main>
-
-  <section id="final">
-    <h1>FIN DEL JUEGO</h1>
-    <p>Era solamente una simulación.</p>
-    <p>Tu dispositivo está seguro.</p>
+  <section class="hero" id="inicio">
+    <h2>Bienvenido a la Librería de Cuentos de Dragones</h2>
+    <p>
+      Un mundo mágico creado para los amantes de las aventuras, la fantasía y los dragones.
+      Descubre historias inolvidables en la librería personal de Álvaro Veliz Mendoza.
+    </p>
+    <a href="#catalogo" class="btn">Ver cuentos</a>
   </section>
 
-  <script>
-    const mensajes = [
-      "Detectando una señal desconocida...",
-      "La conexión no puede ser interrumpida...",
-      "Interferencia crítica detectada...",
-      "ALERTA: actividad desconocida...",
-      "Analizando el dispositivo...",
-      "La señal está cada vez más cerca...",
-      "No apagues la pantalla...",
-      "Protocolo de emergencia activado...",
-      "Preparando cierre del sistema...",
-      "SEÑAL LOCALIZADA..."
-    ];
+  <section class="sobre" id="sobre">
+    <h2>Sobre la Librería</h2>
+    <p>
+      Esta librería está dedicada exclusivamente a cuentos y relatos de dragones, castillos,
+      reinos mágicos y héroes legendarios. Es un espacio donde la imaginación cobra vida y cada
+      libro te lleva a una aventura fantástica.
+    </p>
 
-    const mensaje = document.getElementById("mensaje");
-    const contador = document.getElementById("contador");
-    const progreso = document.getElementById("progreso");
-    const codigo = document.getElementById("codigo");
-    const pantalla = document.getElementById("pantalla");
-    const final = document.getElementById("final");
+    <div class="autor-box">
+      <h3 style="color:#ffb703; margin-bottom:10px;">Propietario</h3>
+      <p>
+        <strong>Álvaro Veliz Mendoza</strong> es el creador de esta librería mágica,
+        pensada para compartir historias fantásticas, creatividad y amor por los cuentos de dragones.
+      </p>
+    </div>
 
-    let tiempo = 10;
+    <div class="viñetas">
+      <h3 style="color:#ffb703; margin-bottom:15px;">¿Qué encontrarás aquí?</h3>
+      <ul>
+        <li>Cuentos clásicos y modernos de dragones.</li>
+        <li>Historias llenas de magia, castillos y aventuras.</li>
+        <li>Relatos para niños, jóvenes y amantes de la fantasía.</li>
+        <li>Un ambiente visual mágico y llamativo.</li>
+        <li>Una librería personal con identidad única.</li>
+      </ul>
+    </div>
+  </section>
 
-    function generarCodigo() {
-      const caracteres = "01X#@!ERROR-ALERTA-UNKNOWN";
-      let resultado = "";
+  <section id="catalogo">
+    <h2>Catálogo de Cuentos</h2>
+    <div class="catalogo">
+      <div class="card">
+        <div class="img">📘</div>
+        <div class="contenido">
+          <h3>El Dragón Azul</h3>
+          <p>
+            Un cuento sobre un dragón sabio que protege un valle secreto lleno de tesoros
+            y enseñanzas mágicas.
+          </p>
+        </div>
+      </div>
 
-      for (let i = 0; i < 70; i++) {
-        const posicion = Math.floor(Math.random() * caracteres.length);
-        resultado += caracteres[posicion];
-      }
+      <div class="card">
+        <div class="img">🔥</div>
+        <div class="contenido">
+          <h3>La Montaña de Fuego</h3>
+          <p>
+            Una historia emocionante donde un joven valiente debe cruzar montañas para
+            encontrar al dragón legendario.
+          </p>
+        </div>
+      </div>
 
-      codigo.textContent = resultado;
-    }
+      <div class="card">
+        <div class="img">🏰</div>
+        <div class="contenido">
+          <h3>El Castillo del Dragón Dorado</h3>
+          <p>
+            Un relato encantador sobre un castillo mágico custodiado por un dragón noble
+            y poderoso.
+          </p>
+        </div>
+      </div>
 
-    const intervalo = setInterval(() => {
-      tiempo--;
+      <div class="card">
+        <div class="img">✨</div>
+        <div class="contenido">
+          <h3>Las Alas de Cristal</h3>
+          <p>
+            Una historia fantástica sobre una dragona especial cuyas alas brillan con la luz
+            de las estrellas.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      contador.textContent = tiempo;
-      mensaje.textContent = mensajes[10 - tiempo];
-      progreso.style.width = ((10 - tiempo) * 10) + "%";
+  <section class="contacto" id="contacto">
+    <h2>Contacto</h2>
+    <p><strong>Propietario:</strong> Álvaro Veliz Mendoza</p>
+    <p><strong>Librería:</strong> Dragones de Álvaro</p>
+    <p><strong>Email:</strong> alvaro@dragones.com</p>
+    <p><strong>Teléfono:</strong> +591 70000000</p>
+    <p><strong>Dirección:</strong> Tu ciudad, Bolivia</p>
+  </section>
 
-      generarCodigo();
-      document.body.classList.add("destello");
+  <footer>
+    <p>© 2026 Dragones de Álvaro | Creado por Álvaro Veliz Mendoza</p>
+  </footer>
 
-      setTimeout(() => {
-        document.body.classList.remove("destello");
-      }, 180);
-
-      if (tiempo <= 0) {
-        clearInterval(intervalo);
-        contador.textContent = "0";
-        mensaje.textContent = "CONEXIÓN TERMINADA";
-        progreso.style.width = "100%";
-
-        setTimeout(() => {
-          pantalla.style.display = "none";
-          final.style.display = "block";
-        }, 2000);
-      }
-    }, 1000);
-  </script>
 </body>
 </html>
