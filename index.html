@@ -1,366 +1,2195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Librería de Dragones | Álvaro Veliz Mendoza</title>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Librería digital de cuentos de dragones de Álvaro Veliz Mendoza."
+  >
+
+  <meta name="theme-color" content="#0b1020">
+
+  <title>
+    El Archivo del Dragón | Álvaro Veliz Mendoza
+  </title>
+
   <style>
+    :root {
+      --fondo: #070b14;
+      --superficie: #0e1526;
+      --superficie-secundaria: #151f35;
+      --texto: #f5f7fb;
+      --texto-secundario: #aeb8cc;
+      --dorado: #f4bd4b;
+      --dorado-claro: #ffda82;
+      --borde: rgba(255, 255, 255, 0.1);
+      --sombra: 0 20px 55px rgba(0, 0, 0, 0.35);
+      --radio: 22px;
+      --ancho: 1180px;
+    }
+
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      background: linear-gradient(to bottom, #0d0d1f, #1a1a40, #2a1458);
-      color: white;
+      margin: 0;
+      color: var(--texto);
+
+      background:
+        radial-gradient(
+          circle at 20% 0%,
+          rgba(95, 73, 180, 0.18),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(198, 83, 83, 0.13),
+          transparent 30%
+        ),
+        var(--fondo);
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       line-height: 1.6;
     }
 
+    a {
+      color: inherit;
+    }
+
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .contenedor {
+      width: min(100% - 32px, var(--ancho));
+      margin-inline: auto;
+    }
+
+    .enlace-salto {
+      position: fixed;
+      left: 16px;
+      top: -60px;
+      z-index: 9999;
+      background: white;
+      color: black;
+      padding: 10px 14px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+
+    .enlace-salto:focus {
+      top: 16px;
+    }
+
     header {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #ffb703;
       position: sticky;
       top: 0;
       z-index: 1000;
+
+      background: rgba(7, 11, 20, 0.82);
+      backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .barra-navegacion {
+      min-height: 78px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+    .marca {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 13px;
+
+      min-width: 0;
+
+      color: white;
+      text-decoration: none;
     }
 
     .logo {
+      width: 52px;
+      height: 52px;
+
+      flex: 0 0 52px;
+
+      border-radius: 16px;
+
+      box-shadow:
+        0 10px 30px rgba(244, 189, 75, 0.18);
+    }
+
+    .texto-marca {
+      min-width: 0;
+    }
+
+    .texto-marca strong {
+      display: block;
+
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+
+      white-space: nowrap;
+    }
+
+    .texto-marca span {
+      color: var(--texto-secundario);
+
+      font-size: 0.78rem;
+
+      white-space: nowrap;
+    }
+
+    .enlaces-menu {
       display: flex;
       align-items: center;
+
+      gap: 8px;
+    }
+
+    .enlaces-menu a {
+      padding: 10px 13px;
+
+      color: var(--texto-secundario);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.92rem;
+
+      border-radius: 12px;
+
+      transition: 0.2s ease;
+    }
+
+    .enlaces-menu a:hover,
+    .enlaces-menu a:focus {
+      color: white;
+
+      background:
+        rgba(255, 255, 255, 0.06);
+    }
+
+    .boton-menu {
+      display: none;
+
+      width: 45px;
+      height: 45px;
+
+      border-radius: 13px;
+      border: 1px solid var(--borde);
+
+      color: white;
+
+      background:
+        rgba(255, 255, 255, 0.05);
+
+      cursor: pointer;
+    }
+
+    .portada {
+      position: relative;
+
+      padding: 86px 0 64px;
+
+      overflow: hidden;
+    }
+
+    .portada::after {
+      content: "";
+
+      position: absolute;
+
+      width: 460px;
+      height: 460px;
+
+      right: -160px;
+      top: 10px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(244, 189, 75, 0.13);
+
+      box-shadow:
+        0 0 0 50px rgba(244, 189, 75, 0.025),
+        0 0 0 100px rgba(244, 189, 75, 0.018);
+
+      pointer-events: none;
+    }
+
+    .portada-grid {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.1fr)
+        minmax(320px, 0.9fr);
+
+      align-items: center;
+
+      gap: 64px;
+    }
+
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 8px 12px;
+
+      color: var(--dorado-claro);
+
+      border:
+        1px solid rgba(244, 189, 75, 0.25);
+
+      background:
+        rgba(244, 189, 75, 0.07);
+
+      border-radius: 999px;
+
+      font-size: 0.83rem;
+      font-weight: 800;
+
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .portada h1 {
+      max-width: 820px;
+
+      margin: 20px 0 18px;
+
+      font-size:
+        clamp(2.45rem, 7vw, 5.8rem);
+
+      line-height: 0.98;
+
+      letter-spacing: -0.055em;
+    }
+
+    .portada h1 span {
+      color: var(--dorado);
+    }
+
+    .portada p {
+      max-width: 680px;
+
+      margin: 0;
+
+      color: var(--texto-secundario);
+
+      font-size:
+        clamp(1rem, 2.2vw, 1.2rem);
+    }
+
+    .acciones-portada {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 12px;
+
+      margin-top: 30px;
+    }
+
+    .boton {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 9px;
+
+      min-height: 48px;
+
+      padding: 0 18px;
+
+      border-radius: 14px;
+      border: 1px solid transparent;
+
+      text-decoration: none;
+      font-weight: 850;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .boton:hover {
+      transform: translateY(-2px);
+    }
+
+    .boton-principal {
+      color: #221603;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--dorado-claro),
+          var(--dorado)
+        );
+
+      box-shadow:
+        0 14px 34px
+        rgba(244, 189, 75, 0.18);
+    }
+
+    .boton-secundario {
+      color: white;
+
+      background:
+        rgba(255, 255, 255, 0.04);
+
+      border-color: var(--borde);
+    }
+
+    .arte-portada {
+      position: relative;
+
+      min-height: 430px;
+
+      display: grid;
+      place-items: center;
+    }
+
+    .grupo-libros {
+      position: relative;
+
+      width: min(100%, 390px);
+
+      aspect-ratio: 0.92;
+    }
+
+    .libro {
+      position: absolute;
+
+      width: 64%;
+      height: 80%;
+
+      border-radius:
+        14px 24px 24px 14px;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+      box-shadow: var(--sombra);
+
+      overflow: hidden;
+    }
+
+    .libro::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      top: 0;
+
+      width: 12px;
+      height: 100%;
+
+      background:
+        rgba(0, 0, 0, 0.2);
+
+      border-right:
+        1px solid rgba(255, 255, 255, 0.13);
+    }
+
+    .libro-uno {
+      left: 4%;
+      top: 11%;
+
+      transform: rotate(-10deg);
+
+      background:
+        radial-gradient(
+          circle at 75% 18%,
+          rgba(255, 255, 255, 0.15),
+          transparent 22%
+        ),
+        linear-gradient(
+          150deg,
+          #6e2336,
+          #32101c
+        );
+    }
+
+    .libro-dos {
+      right: 2%;
+      top: 4%;
+
+      transform: rotate(9deg);
+
+      background:
+        radial-gradient(
+          circle at 70% 15%,
+          rgba(255, 255, 255, 0.12),
+          transparent 25%
+        ),
+        linear-gradient(
+          150deg,
+          #213f58,
+          #0f1b30
+        );
+    }
+
+    .libro-tres {
+      left: 19%;
+      top: 2%;
+
+      z-index: 2;
+
+      background:
+        radial-gradient(
+          circle at 50% 8%,
+          rgba(255, 218, 130, 0.2),
+          transparent 28%
+        ),
+        linear-gradient(
+          155deg,
+          #403176,
+          #17142d
+        );
+    }
+
+    .contenido-libro {
+      height: 100%;
+
+      padding:
+        34px 26px 24px 34px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .contenido-libro small {
+      color:
+        rgba(255, 255, 255, 0.65);
+
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+
+      font-weight: 800;
+    }
+
+    .contenido-libro strong {
+      display: block;
+
+      font-family:
+        Georgia,
+        serif;
+
+      font-size:
+        clamp(1.4rem, 4vw, 2.5rem);
+
+      line-height: 1.02;
+    }
+
+    .simbolo-libro {
+      width: 70px;
+      height: 70px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      font-size: 2.2rem;
+
+      background:
+        rgba(0, 0, 0, 0.2);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .estadisticas {
+      margin-top: 14px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 12px;
     }
 
-    .logo-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ffb703, #d97706);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 30px;
-      box-shadow: 0 0 15px rgba(255, 183, 3, 0.8);
+    .estadistica {
+      padding: 16px;
+
+      border-radius: 16px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
+
+      border:
+        1px solid var(--borde);
     }
 
-    .logo-text h1 {
-      font-size: 22px;
-      color: #ffb703;
+    .estadistica strong {
+      display: block;
+
+      color: var(--dorado-claro);
+
+      font-size: 1.15rem;
     }
 
-    .logo-text p {
-      font-size: 13px;
-      color: #ddd;
-    }
+    .estadistica span {
+      color: var(--texto-secundario);
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 18px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #ffb703;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 90px 20px 70px;
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
-                  url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80') center/cover;
-    }
-
-    .hero h2 {
-      font-size: 42px;
-      color: #ffb703;
-      margin-bottom: 15px;
-      text-shadow: 2px 2px 8px #000;
-    }
-
-    .hero p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 18px;
-      color: #f5f5f5;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 12px 24px;
-      background: #ffb703;
-      color: #1a1a1a;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #ffd166;
-      transform: scale(1.05);
+      font-size: 0.8rem;
     }
 
     section {
-      padding: 60px 30px;
-      max-width: 1200px;
-      margin: auto;
+      padding: 74px 0;
     }
 
-    section h2 {
-      text-align: center;
-      font-size: 34px;
-      margin-bottom: 25px;
-      color: #ffb703;
-    }
-
-    .sobre p {
-      text-align: center;
-      max-width: 850px;
-      margin: auto;
-      font-size: 18px;
-    }
-
-    .viñetas {
-      margin-top: 30px;
-      background: rgba(255,255,255,0.06);
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-
-    .viñetas ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .viñetas li {
-      margin: 14px 0;
-      font-size: 17px;
-      padding-left: 32px;
-      position: relative;
-    }
-
-    .viñetas li::before {
-      content: "🐉";
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-
-    .catalogo {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.07);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-    }
-
-    .card .img {
-      height: 200px;
+    .encabezado-seccion {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 70px;
-      background: linear-gradient(to bottom right, #4b0082, #0f3460);
+      align-items: end;
+      justify-content: space-between;
+
+      gap: 24px;
+
+      margin-bottom: 30px;
     }
 
-    .card .contenido {
+    .encabezado-seccion h2 {
+      margin: 0;
+
+      font-size:
+        clamp(2rem, 4.6vw, 3.4rem);
+
+      letter-spacing: -0.04em;
+    }
+
+    .encabezado-seccion p {
+      max-width: 600px;
+
+      margin: 8px 0 0;
+
+      color: var(--texto-secundario);
+    }
+
+    .herramientas-catalogo {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        220px;
+
+      gap: 12px;
+
+      margin-bottom: 24px;
+    }
+
+    .campo {
+      width: 100%;
+      min-height: 50px;
+
+      padding: 0 15px;
+
+      color: white;
+
+      background: var(--superficie);
+
+      border:
+        1px solid var(--borde);
+
+      border-radius: 14px;
+
+      outline: none;
+    }
+
+    .campo:focus {
+      border-color:
+        rgba(244, 189, 75, 0.58);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(244, 189, 75, 0.08);
+    }
+
+    select.campo option {
+      background: #11192b;
+    }
+
+    .rejilla-libros {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 20px;
+    }
+
+    .tarjeta-libro {
+      display: flex;
+      flex-direction: column;
+
+      min-height: 100%;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.045),
+          rgba(255, 255, 255, 0.025)
+        );
+
+      border:
+        1px solid var(--borde);
+
+      border-radius: var(--radio);
+
+      overflow: hidden;
+
+      box-shadow:
+        0 16px 38px
+        rgba(0, 0, 0, 0.2);
+
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .tarjeta-libro:hover {
+      transform: translateY(-5px);
+
+      border-color:
+        rgba(244, 189, 75, 0.28);
+    }
+
+    .portada-libro {
+      position: relative;
+
+      min-height: 230px;
+
+      padding: 24px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      overflow: hidden;
+    }
+
+    .portada-libro::after {
+      content: "";
+
+      position: absolute;
+
+      right: -55px;
+      bottom: -70px;
+
+      width: 170px;
+      height: 170px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.13);
+
+      box-shadow:
+        0 0 0 28px
+        rgba(255, 255, 255, 0.025);
+    }
+
+    .portada-a {
+      background:
+        linear-gradient(
+          145deg,
+          #70243a,
+          #24101d
+        );
+    }
+
+    .portada-b {
+      background:
+        linear-gradient(
+          145deg,
+          #215271,
+          #0a1c2f
+        );
+    }
+
+    .portada-c {
+      background:
+        linear-gradient(
+          145deg,
+          #5f4824,
+          #211709
+        );
+    }
+
+    .portada-d {
+      background:
+        linear-gradient(
+          145deg,
+          #493a79,
+          #17142c
+        );
+    }
+
+    .portada-e {
+      background:
+        linear-gradient(
+          145deg,
+          #265d4d,
+          #0b251d
+        );
+    }
+
+    .portada-f {
+      background:
+        linear-gradient(
+          145deg,
+          #7b3c24,
+          #2e150c
+        );
+    }
+
+    .portada-g {
+      background:
+        linear-gradient(
+          145deg,
+          #4f275f,
+          #1d1025
+        );
+    }
+
+    .tipo-libro {
+      align-self: flex-start;
+
+      padding: 7px 10px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(0, 0, 0, 0.25);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+      font-size: 0.74rem;
+      font-weight: 800;
+
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .titulo-portada {
+      position: relative;
+      z-index: 1;
+
+      max-width: 88%;
+
+      font-family:
+        Georgia,
+        serif;
+
+      font-size: 1.75rem;
+
+      line-height: 1.05;
+    }
+
+    .icono-portada {
+      position: absolute;
+
+      right: 22px;
+      top: 23px;
+
+      font-size: 2rem;
+
+      filter:
+        drop-shadow(
+          0 10px 12px
+          rgba(0, 0, 0, 0.25)
+        );
+    }
+
+    .cuerpo-tarjeta {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+
       padding: 20px;
     }
 
-    .card h3 {
-      color: #ffb703;
-      margin-bottom: 10px;
+    .autor {
+      color: var(--dorado-claro);
+
+      font-weight: 800;
+      font-size: 0.87rem;
     }
 
-    .card p {
-      font-size: 15px;
-      color: #eee;
+    .cuerpo-tarjeta h3 {
+      margin: 7px 0 9px;
+
+      font-size: 1.2rem;
     }
 
-    .autor-box {
-      background: rgba(255, 183, 3, 0.12);
-      border-left: 5px solid #ffb703;
-      padding: 25px;
-      margin-top: 35px;
-      border-radius: 10px;
+    .cuerpo-tarjeta p {
+      margin: 0 0 18px;
+
+      color: var(--texto-secundario);
+
+      font-size: 0.93rem;
     }
 
-    .contacto {
+    .datos-libro {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-top: auto;
+      margin-bottom: 16px;
+    }
+
+    .dato {
+      padding: 6px 9px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.055);
+
+      border:
+        1px solid var(--borde);
+
+      color: var(--texto-secundario);
+
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .enlace-libro {
+      width: 100%;
+      min-height: 44px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      border-radius: 12px;
+
+      color: #211603;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--dorado-claro),
+          var(--dorado)
+        );
+
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .sin-resultados {
+      display: none;
+
+      padding: 34px;
+
       text-align: center;
+
+      color: var(--texto-secundario);
+
+      border:
+        1px dashed var(--borde);
+
+      border-radius: var(--radio);
     }
 
-    .contacto p {
-      margin: 8px 0;
-      font-size: 18px;
+    .caracteristicas {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .caracteristica {
+      padding: 24px;
+
+      border-radius: var(--radio);
+
+      background: var(--superficie);
+
+      border:
+        1px solid var(--borde);
+    }
+
+    .icono-caracteristica {
+      width: 46px;
+      height: 46px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 14px;
+
+      background:
+        rgba(244, 189, 75, 0.1);
+
+      border:
+        1px solid rgba(244, 189, 75, 0.18);
+
+      font-size: 1.35rem;
+    }
+
+    .caracteristica h3 {
+      margin: 15px 0 8px;
+    }
+
+    .caracteristica p {
+      margin: 0;
+
+      color: var(--texto-secundario);
+    }
+
+    .tarjeta-propietario {
+      display: grid;
+
+      grid-template-columns:
+        170px minmax(0, 1fr);
+
+      align-items: center;
+
+      gap: 28px;
+
+      padding: 30px;
+
+      border-radius: 28px;
+
+      background:
+        linear-gradient(
+          130deg,
+          rgba(244, 189, 75, 0.09),
+          rgba(255, 255, 255, 0.025)
+        ),
+        var(--superficie);
+
+      border:
+        1px solid rgba(244, 189, 75, 0.18);
+    }
+
+    .emblema-propietario {
+      aspect-ratio: 1;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #352456,
+          #12182b
+        );
+
+      border:
+        1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .emblema-propietario strong {
+      color: var(--dorado-claro);
+
+      font-size: 2.5rem;
+
+      letter-spacing: -0.08em;
+    }
+
+    .texto-propietario h2 {
+      margin: 0;
+
+      font-size:
+        clamp(1.8rem, 4vw, 3rem);
+    }
+
+    .texto-propietario p {
+      max-width: 740px;
+
+      margin-bottom: 0;
+
+      color: var(--texto-secundario);
     }
 
     footer {
-      background: #0b0b16;
-      text-align: center;
-      padding: 20px;
-      border-top: 2px solid #ffb703;
-      margin-top: 30px;
-      color: #ccc;
+      padding: 28px 0 34px;
+
+      border-top:
+        1px solid var(--borde);
+
+      color: var(--texto-secundario);
     }
 
-    @media (max-width: 768px) {
-      header {
+    .pie {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+    }
+
+    .pie strong {
+      color: white;
+    }
+
+    .pie a {
+      color: var(--dorado-claro);
+
+      text-decoration: none;
+    }
+
+    @media (max-width: 960px) {
+      .portada-grid {
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+      }
+
+      .arte-portada {
+        min-height: 370px;
+      }
+
+      .rejilla-libros {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .caracteristicas {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .barra-navegacion {
+        min-height: 68px;
+      }
+
+      .texto-marca strong {
+        font-size: 0.9rem;
+      }
+
+      .texto-marca span {
+        font-size: 0.7rem;
+      }
+
+      .logo {
+        width: 46px;
+        height: 46px;
+
+        flex-basis: 46px;
+      }
+
+      .boton-menu {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .enlaces-menu {
+        position: absolute;
+
+        left: 16px;
+        right: 16px;
+        top: 76px;
+
+        display: none;
+
+        padding: 10px;
+
+        border-radius: 18px;
+
+        background: #0d1424;
+
+        border:
+          1px solid var(--borde);
+
+        box-shadow: var(--sombra);
+      }
+
+      .enlaces-menu.abierto {
+        display: grid;
+      }
+
+      .enlaces-menu a {
+        padding: 12px 14px;
+      }
+
+      .portada {
+        padding: 56px 0 34px;
+      }
+
+      .portada h1 {
+        font-size:
+          clamp(2.55rem, 15vw, 4.2rem);
+      }
+
+      .arte-portada {
+        min-height: 320px;
+      }
+
+      .grupo-libros {
+        width: min(90%, 320px);
+      }
+
+      .estadisticas {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 52px 0;
+      }
+
+      .encabezado-seccion {
+        align-items: flex-start;
         flex-direction: column;
-        gap: 15px;
+      }
+
+      .herramientas-catalogo {
+        grid-template-columns: 1fr;
+      }
+
+      .rejilla-libros {
+        grid-template-columns: 1fr;
+      }
+
+      .portada-libro {
+        min-height: 215px;
+      }
+
+      .tarjeta-propietario {
+        grid-template-columns: 1fr;
+
         text-align: center;
       }
 
-      nav a {
-        margin: 0 8px;
+      .emblema-propietario {
+        width: 140px;
+
+        margin-inline: auto;
       }
 
-      .hero h2 {
-        font-size: 30px;
-      }
-
-      .logo-text h1 {
-        font-size: 18px;
+      .pie {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🐉</div>
-      <div class="logo-text">
-        <h1>Dragones de Álvaro</h1>
-        <p>Álvaro Veliz Mendoza</p>
-      </div>
-    </div>
+  <a class="enlace-salto" href="#catalogo">
+    Ir al catálogo
+  </a>
 
-    <nav>
-      <a href="#inicio">Inicio</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
+  <header>
+    <div class="contenedor barra-navegacion">
+
+      <a
+        class="marca"
+        href="#inicio"
+        aria-label="Volver al inicio"
+      >
+
+        <svg
+          class="logo"
+          viewBox="0 0 64 64"
+          role="img"
+          aria-label="Logo AVM con dragón"
+        >
+
+          <defs>
+            <linearGradient
+              id="degradadoLogo"
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="1"
+            >
+              <stop
+                offset="0"
+                stop-color="#ffdc8a"
+              />
+
+              <stop
+                offset="1"
+                stop-color="#d99428"
+              />
+            </linearGradient>
+          </defs>
+
+          <rect
+            width="64"
+            height="64"
+            rx="17"
+            fill="#171d31"
+          />
+
+          <path
+            d="M46 17c-8-5-18-3-23 4-4 6-3 13 1 18-5-1-9-4-12-8 0 10 7 18 17 20 9 2 18-2 22-10-5 3-10 3-15 1 7-1 13-7 13-14 0-4-1-8-3-11Z"
+            fill="url(#degradadoLogo)"
+            opacity="0.95"
+          />
+
+          <path
+            d="M42 21c3 1 6 4 7 7-3-2-6-2-9-1"
+            fill="none"
+            stroke="#171d31"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+
+          <circle
+            cx="41.5"
+            cy="22.5"
+            r="1.6"
+            fill="#171d31"
+          />
+
+          <text
+            x="31"
+            y="45"
+            text-anchor="middle"
+            font-size="13"
+            font-family="Arial"
+            font-weight="900"
+            fill="#171d31"
+          >
+            AVM
+          </text>
+
+        </svg>
+
+        <span class="texto-marca">
+          <strong>
+            El Archivo del Dragón
+          </strong>
+
+          <span>
+            Álvaro Veliz Mendoza
+          </span>
+        </span>
+
+      </a>
+
+      <button
+        class="boton-menu"
+        id="botonMenu"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+      <nav
+        class="enlaces-menu"
+        id="enlacesMenu"
+        aria-label="Navegación principal"
+      >
+        <a href="#inicio">
+          Inicio
+        </a>
+
+        <a href="#catalogo">
+          Libros
+        </a>
+
+        <a href="#coleccion">
+          Colección
+        </a>
+
+        <a href="#propietario">
+          Propietario
+        </a>
+      </nav>
+
+    </div>
   </header>
 
-  <section class="hero" id="inicio">
-    <h2>Bienvenido a la Librería de Cuentos de Dragones</h2>
-    <p>
-      Un mundo mágico creado para los amantes de las aventuras, la fantasía y los dragones.
-      Descubre historias inolvidables en la librería personal de Álvaro Veliz Mendoza.
-    </p>
-    <a href="#catalogo" class="btn">Ver cuentos</a>
-  </section>
+  <main id="inicio">
 
-  <section class="sobre" id="sobre">
-    <h2>Sobre la Librería</h2>
-    <p>
-      Esta librería está dedicada exclusivamente a cuentos y relatos de dragones, castillos,
-      reinos mágicos y héroes legendarios. Es un espacio donde la imaginación cobra vida y cada
-      libro te lleva a una aventura fantástica.
-    </p>
+    <section class="portada">
+      <div class="contenedor portada-grid">
 
-    <div class="autor-box">
-      <h3 style="color:#ffb703; margin-bottom:10px;">Propietario</h3>
-      <p>
-        <strong>Álvaro Veliz Mendoza</strong> es el creador de esta librería mágica,
-        pensada para compartir historias fantásticas, creatividad y amor por los cuentos de dragones.
-      </p>
-    </div>
+        <div>
+          <span class="etiqueta">
+            🐉 Biblioteca fantástica
+          </span>
 
-    <div class="viñetas">
-      <h3 style="color:#ffb703; margin-bottom:15px;">¿Qué encontrarás aquí?</h3>
-      <ul>
-        <li>Cuentos clásicos y modernos de dragones.</li>
-        <li>Historias llenas de magia, castillos y aventuras.</li>
-        <li>Relatos para niños, jóvenes y amantes de la fantasía.</li>
-        <li>Un ambiente visual mágico y llamativo.</li>
-        <li>Una librería personal con identidad única.</li>
-      </ul>
-    </div>
-  </section>
+          <h1>
+            Cuentos donde los
+            <span>dragones</span>
+            cobran vida.
+          </h1>
 
-  <section id="catalogo">
-    <h2>Catálogo de Cuentos</h2>
-    <div class="catalogo">
-      <div class="card">
-        <div class="img">📘</div>
-        <div class="contenido">
-          <h3>El Dragón Azul</h3>
           <p>
-            Un cuento sobre un dragón sabio que protege un valle secreto lleno de tesoros
-            y enseñanzas mágicas.
+            Una librería digital personal creada por
+            <strong>Álvaro Veliz Mendoza</strong>,
+            con historias clásicas de aventuras,
+            reinos mágicos y criaturas legendarias.
           </p>
+
+          <div class="acciones-portada">
+            <a
+              class="boton boton-principal"
+              href="#catalogo"
+            >
+              Explorar libros →
+            </a>
+
+            <a
+              class="boton boton-secundario"
+              href="#propietario"
+            >
+              Conocer la librería
+            </a>
+          </div>
+
+          <div
+            class="estadisticas"
+            aria-label="Resumen de la biblioteca"
+          >
+
+            <div class="estadistica">
+              <strong>7</strong>
+              <span>obras reales</span>
+            </div>
+
+            <div class="estadistica">
+              <strong>100%</strong>
+              <span>adaptable a celular</span>
+            </div>
+
+            <div class="estadistica">
+              <strong>Gratis</strong>
+              <span>lectura digital</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="arte-portada"
+          aria-hidden="true"
+        >
+
+          <div class="grupo-libros">
+
+            <div class="libro libro-uno">
+              <div class="contenido-libro">
+                <small>
+                  Crónicas
+                </small>
+
+                <strong>
+                  Reinos de fuego
+                </strong>
+
+                <span class="simbolo-libro">
+                  🔥
+                </span>
+              </div>
+            </div>
+
+            <div class="libro libro-dos">
+              <div class="contenido-libro">
+                <small>
+                  Aventuras
+                </small>
+
+                <strong>
+                  Alas sobre Oz
+                </strong>
+
+                <span class="simbolo-libro">
+                  ✨
+                </span>
+              </div>
+            </div>
+
+            <div class="libro libro-tres">
+              <div class="contenido-libro">
+                <small>
+                  Biblioteca AVM
+                </small>
+
+                <strong>
+                  El Archivo del Dragón
+                </strong>
+
+                <span class="simbolo-libro">
+                  🐉
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="catalogo">
+      <div class="contenedor">
+
+        <div class="encabezado-seccion">
+          <div>
+            <span class="etiqueta">
+              Catálogo seleccionado
+            </span>
+
+            <h2>
+              Libros reales sobre dragones
+            </h2>
+
+            <p>
+              Los botones conducen a páginas reales
+              de Project Gutenberg. Las obras están
+              disponibles principalmente en inglés.
+            </p>
+          </div>
+        </div>
+
+        <div class="herramientas-catalogo">
+
+          <input
+            class="campo"
+            id="buscador"
+            type="search"
+            placeholder="Buscar por título o autor..."
+            aria-label="Buscar libro"
+          >
+
+          <select
+            class="campo"
+            id="filtroCategoria"
+            aria-label="Filtrar por categoría"
+          >
+            <option value="todos">
+              Todas las categorías
+            </option>
+
+            <option value="aventura">
+              Aventura
+            </option>
+
+            <option value="clasico">
+              Clásico
+            </option>
+
+            <option value="fantasia">
+              Fantasía
+            </option>
+
+            <option value="cuentos">
+              Cuentos
+            </option>
+          </select>
+
+        </div>
+
+        <div
+          class="rejilla-libros"
+          id="rejillaLibros"
+        >
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="the book of dragons e nesbit"
+            data-categoria="cuentos"
+          >
+
+            <div class="portada-libro portada-a">
+              <span class="tipo-libro">
+                Cuentos
+              </span>
+
+              <span class="icono-portada">
+                🐲
+              </span>
+
+              <strong class="titulo-portada">
+                The Book of Dragons
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                E. Nesbit
+              </span>
+
+              <h3>
+                El libro de los dragones
+              </h3>
+
+              <p>
+                Una colección de relatos fantásticos
+                con dragones, aventuras y humor.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Colección
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Dominio público
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/23661"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="my fathers dragon ruth stiles gannett"
+            data-categoria="aventura"
+          >
+
+            <div class="portada-libro portada-b">
+              <span class="tipo-libro">
+                Aventura
+              </span>
+
+              <span class="icono-portada">
+                🗺️
+              </span>
+
+              <strong class="titulo-portada">
+                My Father's Dragon
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                Ruth Stiles Gannett
+              </span>
+
+              <h3>
+                El dragón de mi padre
+              </h3>
+
+              <p>
+                Elmer viaja a una isla salvaje
+                para rescatar a un pequeño dragón.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Aventura
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Infantil
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/30017"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="the dragon of wantley owen wister"
+            data-categoria="clasico"
+          >
+
+            <div class="portada-libro portada-c">
+              <span class="tipo-libro">
+                Clásico
+              </span>
+
+              <span class="icono-portada">
+                ⚔️
+              </span>
+
+              <strong class="titulo-portada">
+                The Dragon of Wantley
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                Owen Wister
+              </span>
+
+              <h3>
+                El dragón de Wantley
+              </h3>
+
+              <p>
+                Una historia humorística y fantástica
+                inspirada en una antigua leyenda.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Leyenda
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Clásico
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/26448"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="dream days reluctant dragon kenneth grahame"
+            data-categoria="cuentos"
+          >
+
+            <div class="portada-libro portada-d">
+              <span class="tipo-libro">
+                Cuentos
+              </span>
+
+              <span class="icono-portada">
+                📖
+              </span>
+
+              <strong class="titulo-portada">
+                Dream Days
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                Kenneth Grahame
+              </span>
+
+              <h3>
+                Incluye The Reluctant Dragon
+              </h3>
+
+              <p>
+                La colección que contiene el conocido
+                cuento del dragón que no quería luchar.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Relatos
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Clásico
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/35187"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="tik tok of oz l frank baum"
+            data-categoria="fantasia"
+          >
+
+            <div class="portada-libro portada-e">
+              <span class="tipo-libro">
+                Fantasía
+              </span>
+
+              <span class="icono-portada">
+                ⚙️
+              </span>
+
+              <strong class="titulo-portada">
+                Tik-Tok of Oz
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                L. Frank Baum
+              </span>
+
+              <h3>
+                Tik-Tok de Oz
+              </h3>
+
+              <p>
+                Una aventura en Oz con criaturas mágicas,
+                reinos extraños y dragones.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Oz
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Fantasía
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/23076"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="dorothy and the wizard in oz l frank baum"
+            data-categoria="fantasia"
+          >
+
+            <div class="portada-libro portada-f">
+              <span class="tipo-libro">
+                Fantasía
+              </span>
+
+              <span class="icono-portada">
+                🌪️
+              </span>
+
+              <strong class="titulo-portada">
+                Dorothy and the Wizard in Oz
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                L. Frank Baum
+              </span>
+
+              <h3>
+                Dorothy y el mago en Oz
+              </h3>
+
+              <p>
+                Una aventura subterránea con magia,
+                criaturas sorprendentes y dragones.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Oz
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Aventura
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/22566"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+          <article
+            class="tarjeta-libro"
+            data-titulo="the enchanted island of yew l frank baum"
+            data-categoria="fantasia"
+          >
+
+            <div class="portada-libro portada-g">
+              <span class="tipo-libro">
+                Fantasía
+              </span>
+
+              <span class="icono-portada">
+                🏰
+              </span>
+
+              <strong class="titulo-portada">
+                The Enchanted Island of Yew
+              </strong>
+            </div>
+
+            <div class="cuerpo-tarjeta">
+              <span class="autor">
+                L. Frank Baum
+              </span>
+
+              <h3>
+                La isla encantada de Yew
+              </h3>
+
+              <p>
+                Príncipes, magia, aventuras y un dragón
+                brillante en una isla fantástica.
+              </p>
+
+              <div class="datos-libro">
+                <span class="dato">
+                  Reinos
+                </span>
+
+                <span class="dato">
+                  Inglés
+                </span>
+
+                <span class="dato">
+                  Magia
+                </span>
+              </div>
+
+              <a
+                class="enlace-libro"
+                href="https://www.gutenberg.org/ebooks/518"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Leer libro ↗
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+        <div
+          class="sin-resultados"
+          id="sinResultados"
+        >
+          No se encontraron libros con ese criterio.
+        </div>
+
+      </div>
+    </section>
+
+    <section id="coleccion">
+      <div class="contenedor">
+
+        <div class="encabezado-seccion">
+          <div>
+            <span class="etiqueta">
+              Una biblioteca práctica
+            </span>
+
+            <h2>
+              Diseñada para cualquier pantalla
+            </h2>
+          </div>
+        </div>
+
+        <div class="caracteristicas">
+
+          <article class="caracteristica">
+            <div class="icono-caracteristica">
+              📱
+            </div>
+
+            <h3>
+              Diseño adaptable
+            </h3>
+
+            <p>
+              La página cambia automáticamente
+              para celulares, tabletas y computadoras.
+            </p>
+          </article>
+
+          <article class="caracteristica">
+            <div class="icono-caracteristica">
+              🔎
+            </div>
+
+            <h3>
+              Buscador integrado
+            </h3>
+
+            <p>
+              Busca por título o autor y filtra
+              la colección por categoría.
+            </p>
+          </article>
+
+          <article class="caracteristica">
+            <div class="icono-caracteristica">
+              🔗
+            </div>
+
+            <h3>
+              Enlaces reales
+            </h3>
+
+            <p>
+              Cada obra conduce a su página
+              correspondiente en Project Gutenberg.
+            </p>
+          </article>
+
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="img">🔥</div>
-        <div class="contenido">
-          <h3>La Montaña de Fuego</h3>
-          <p>
-            Una historia emocionante donde un joven valiente debe cruzar montañas para
-            encontrar al dragón legendario.
-          </p>
+    <section id="propietario">
+      <div class="contenedor">
+
+        <div class="tarjeta-propietario">
+
+          <div
+            class="emblema-propietario"
+            aria-hidden="true"
+          >
+            <strong>
+              AVM
+            </strong>
+          </div>
+
+          <div class="texto-propietario">
+
+            <span class="etiqueta">
+              Propietario y creador
+            </span>
+
+            <h2>
+              Álvaro Veliz Mendoza
+            </h2>
+
+            <p>
+              El Archivo del Dragón es una librería
+              digital personal dedicada a cuentos,
+              novelas y relatos fantásticos donde
+              los dragones son protagonistas o forman
+              parte de mundos llenos de magia y aventura.
+            </p>
+
+          </div>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="img">🏰</div>
-        <div class="contenido">
-          <h3>El Castillo del Dragón Dorado</h3>
-          <p>
-            Un relato encantador sobre un castillo mágico custodiado por un dragón noble
-            y poderoso.
-          </p>
-        </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="img">✨</div>
-        <div class="contenido">
-          <h3>Las Alas de Cristal</h3>
-          <p>
-            Una historia fantástica sobre una dragona especial cuyas alas brillan con la luz
-            de las estrellas.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="contacto" id="contacto">
-    <h2>Contacto</h2>
-    <p><strong>Propietario:</strong> Álvaro Veliz Mendoza</p>
-    <p><strong>Librería:</strong> Dragones de Álvaro</p>
-    <p><strong>Email:</strong> alvaro@dragones.com</p>
-    <p><strong>Teléfono:</strong> +591 70000000</p>
-    <p><strong>Dirección:</strong> Tu ciudad, Bolivia</p>
-  </section>
+  </main>
 
   <footer>
-    <p>© 2026 Dragones de Álvaro | Creado por Álvaro Veliz Mendoza</p>
+    <div class="contenedor pie">
+
+      <div>
+        <strong>
+          El Archivo del Dragón
+        </strong>
+
+        <br>
+
+        <span>
+          ©
+          <span id="anioActual"></span>
+          Álvaro Veliz Mendoza.
+        </span>
+      </div>
+
+      <a href="#inicio">
+        Volver arriba ↑
+      </a>
+
+    </div>
   </footer>
 
+  <script>
+    const botonMenu =
+      document.getElementById("botonMenu");
+
+    const enlacesMenu =
+      document.getElementById("enlacesMenu");
+
+    const buscador =
+      document.getElementById("buscador");
+
+    const filtroCategoria =
+      document.getElementById("filtroCategoria");
+
+    const tarjetas =
+      Array.from(
+        document.querySelectorAll(".tarjeta-libro")
+      );
+
+    const sinResultados =
+      document.getElementById("sinResultados");
+
+    botonMenu.addEventListener("click", () => {
+      const abierto =
+        enlacesMenu.classList.toggle("abierto");
+
+      botonMenu.setAttribute(
+        "aria-expanded",
+        String(abierto)
+      );
+
+      botonMenu.textContent =
+        abierto ? "✕" : "☰";
+    });
+
+    enlacesMenu
+      .querySelectorAll("a")
+      .forEach((enlace) => {
+
+        enlace.addEventListener("click", () => {
+          enlacesMenu
+            .classList
+            .remove("abierto");
+
+          botonMenu.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          botonMenu.textContent = "☰";
+        });
+
+      });
+
+    function filtrarLibros() {
+      const texto =
+        buscador
+          .value
+          .trim()
+          .toLowerCase();
+
+      const categoria =
+        filtroCategoria.value;
+
+      let visibles = 0;
+
+      tarjetas.forEach((tarjeta) => {
+        const coincideTexto =
+          tarjeta.dataset.titulo.includes(texto);
+
+        const coincideCategoria =
+          categoria === "todos" ||
+          tarjeta.dataset.categoria === categoria;
+
+        const mostrar =
+          coincideTexto &&
+          coincideCategoria;
+
+        tarjeta.hidden = !mostrar;
+
+        if (mostrar) {
+          visibles++;
+        }
+      });
+
+      sinResultados.style.display =
+        visibles === 0
+          ? "block"
+          : "none";
+    }
+
+    buscador.addEventListener(
+      "input",
+      filtrarLibros
+    );
+
+    filtroCategoria.addEventListener(
+      "change",
+      filtrarLibros
+    );
+
+    document.getElementById(
+      "anioActual"
+    ).textContent =
+      new Date().getFullYear();
+  </script>
+
 </body>
-</html>
+            </html>
